@@ -82,9 +82,9 @@ public class AdminServiceImpl implements AdminService {
         existingUser.setFullName(userDTO.getFullName() != null ? userDTO.getFullName() : existingUser.getFullName());
         existingUser.setUsername(userDTO.getUsername() != null ? userDTO.getUsername() : existingUser.getUsername());
         existingUser.setDob(userDTO.getDob() != null ? userDTO.getDob() : existingUser.getDob());
-        existingUser.setGender(userDTO.getGender() != 0 ? userDTO.getGender() : existingUser.getGender());
+        existingUser.setGender(userDTO.getGender() != 2 ? userDTO.getGender() : existingUser.getGender());
         existingUser.setRole(userDTO.getRole() != null ? userDTO.getRole() : existingUser.getRole());
-        existingUser.setStatus(userDTO.getStatus() != 0 ? userDTO.getStatus() : existingUser.getStatus());
+        existingUser.setStatus(userDTO.getStatus() != 2 ? userDTO.getStatus() : existingUser.getStatus());
         existingUser.setUpdatedAt(LocalDateTime.now());
 
         return userRepository.save(existingUser);

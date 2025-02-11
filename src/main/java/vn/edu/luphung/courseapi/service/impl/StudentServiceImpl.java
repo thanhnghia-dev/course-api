@@ -145,7 +145,7 @@ public class StudentServiceImpl implements StudentService {
         existingStudent.setPhoneNumber(studentDTO.getPhoneNumber() != null ? studentDTO.getPhoneNumber() : existingStudent.getPhoneNumber());
         existingStudent.setDob(studentDTO.getDob() != null ? studentDTO.getDob() : existingStudent.getDob());
         existingStudent.setBirthPlace(studentDTO.getBirthPlace() != null ? studentDTO.getBirthPlace() : existingStudent.getBirthPlace());
-        existingStudent.setGender(studentDTO.getGender() != 0 ? studentDTO.getGender() : existingStudent.getGender());
+        existingStudent.setGender(studentDTO.getGender() != 3 ? studentDTO.getGender() : existingStudent.getGender());
         existingStudent.setNote(studentDTO.getNote() != null ? studentDTO.getNote() : existingStudent.getNote());
         existingStudent.setStatus(studentDTO.getStatus() != 0 ? studentDTO.getStatus() : existingStudent.getStatus());
         existingStudent.setUpdatedAt(LocalDateTime.now());

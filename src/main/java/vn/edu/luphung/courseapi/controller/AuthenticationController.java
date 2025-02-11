@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.edu.luphung.courseapi.dto.UserDTO;
 import vn.edu.luphung.courseapi.dto.auth.AuthenticationResponse;
 import vn.edu.luphung.courseapi.model.User;
+import vn.edu.luphung.courseapi.repository.UserRepository;
 import vn.edu.luphung.courseapi.service.AuthenticationService;
 
 @Slf4j
@@ -18,6 +19,7 @@ import vn.edu.luphung.courseapi.service.AuthenticationService;
 @RequestMapping(path = "/api/v1/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
+    private final UserRepository userRepository;
 
     @PostMapping(value = "/register")
     public ResponseEntity<?> signUp(@ModelAttribute UserDTO user) {
@@ -35,8 +37,16 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthenticationResponse> login(@ModelAttribute User user) {
-        return ResponseEntity.ok(authenticationService.authenticate(user));
+    public ResponseEntity<?> login(@ModelAttribute User user) {
+        User dbUser = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(()->new RuntimeException("No user found"));
+
+        if (dbUser.getStatus() == 0) {
+            return new ResponseEntity<>("Tài khoản đã bị ngừng hoạt động!", HttpStatus.FORBIDDEN);
+        }
+
+        AuthenticationResponse response = authenticationService.authenticate(user);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/refresh_token")
