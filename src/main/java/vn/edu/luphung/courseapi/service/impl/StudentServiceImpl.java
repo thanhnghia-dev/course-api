@@ -48,6 +48,10 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.save(student);
     }
 
+    public boolean isPhoneNumberExisted(String phoneNumber) {
+        return studentRepository.existsByPhoneNumber(phoneNumber);
+    }
+
     private String generateRandomStudentId() {
         Random ran = new Random();
         int generatedNum = ran.nextInt(100000);

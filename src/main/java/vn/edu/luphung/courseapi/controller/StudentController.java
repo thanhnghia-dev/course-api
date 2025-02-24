@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.luphung.courseapi.dto.StudentDTO;
+import vn.edu.luphung.courseapi.dto.auth.AuthenticationResponse;
 import vn.edu.luphung.courseapi.model.Student;
 import vn.edu.luphung.courseapi.service.StudentService;
 
@@ -20,9 +21,18 @@ public class StudentController {
 
     // Create a new Student
     @PostMapping()
-    public ResponseEntity<Student> createStudent(@RequestParam int classId,
-                                                 @ModelAttribute StudentDTO student) {
-        return new ResponseEntity<>(studentService.saveStudent(classId, student), HttpStatus.CREATED);
+    public ResponseEntity<?> createStudent(@RequestParam int classId,
+                                           @ModelAttribute StudentDTO student) {
+        try {
+            if (studentService.isPhoneNumberExisted(student.getPhoneNumber())) {
+                return new ResponseEntity<>("Học viên đã tồn tại!", HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity<>(studentService.saveStudent(classId, student), HttpStatus.CREATED);
+
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     // Get all Student
