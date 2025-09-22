@@ -42,10 +42,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+
+        // ✅ Whitelist domain web
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "https://qlhv-lp.vercel.app"
+                "http://localhost:3000",       // React dev
+                "https://qlhv-lp.vercel.app"  // Deploy Vercel
         ));
+
+        // ✅ Cho mobile app (không có Origin header)
+        configuration.setAllowedOriginPatterns(List.of("*"));
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));

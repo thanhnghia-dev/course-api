@@ -47,6 +47,13 @@ public class ClassServiceImpl implements ClassService {
         return classes.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ClassDTO> getClassesByCourseId(int courseId) {
+        List<Class> classes = classRepository.findByCourseId(courseId);
+
+        return classes.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
     private ClassDTO convertToDTO(Class classroom) {
         CourseDTO courseDTO = null;
         Course course = classroom.getCourse();

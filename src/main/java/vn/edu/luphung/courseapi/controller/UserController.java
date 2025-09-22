@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.luphung.courseapi.dto.UserDTO;
-import vn.edu.luphung.courseapi.exception.ResourceNotFoundException;
 import vn.edu.luphung.courseapi.model.User;
 import vn.edu.luphung.courseapi.service.UserService;
 

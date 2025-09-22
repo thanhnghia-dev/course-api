@@ -39,6 +39,9 @@ public class Student {
     @Column(name = "gender")
     private byte gender;
 
+    @Column(name = "citizen_id")
+    private String citizenId;
+
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "class_id")
     private Class classroom;

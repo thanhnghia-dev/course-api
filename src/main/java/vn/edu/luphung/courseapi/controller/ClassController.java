@@ -25,10 +25,16 @@ public class ClassController {
         return new ResponseEntity<>(classService.saveClass(courseId, classDTO), HttpStatus.CREATED);
     }
 
-    // Get all Class
+    // Get all Classes
     @GetMapping
     public List<ClassDTO> getAllClasses() {
         return classService.getClasses();
+    }
+
+    // Get all Classes by Course id
+    @GetMapping("/by-course")
+    public List<ClassDTO> getClassesByCourse(@RequestParam("courseId") int courseId) {
+        return classService.getClassesByCourseId(courseId);
     }
 
     // Get Class by id

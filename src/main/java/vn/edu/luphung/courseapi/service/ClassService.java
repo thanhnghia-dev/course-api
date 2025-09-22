@@ -9,6 +9,7 @@ import java.util.List;
 public interface ClassService {
     Class saveClass(int courseId, ClassDTO classDTO);
     List<ClassDTO> getClasses();
+    List<ClassDTO> getClassesByCourseId(int courseId);
     Class getClassByID(Integer id);
     Class updateClass(Integer id, ClassDTO classDTO);
     void deleteClassByID(Integer id);

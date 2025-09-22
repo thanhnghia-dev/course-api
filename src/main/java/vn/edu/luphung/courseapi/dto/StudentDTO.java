@@ -18,6 +18,7 @@ public class StudentDTO {
     private LocalDateTime dob;
     private String birthPlace;
     private byte gender;
+    private String citizenId;
     private ClassDTO classroom;
     private String note;
     private byte status;

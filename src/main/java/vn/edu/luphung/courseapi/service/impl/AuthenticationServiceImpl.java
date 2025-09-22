@@ -21,6 +21,7 @@ import vn.edu.luphung.courseapi.repository.TokenRepository;
 import vn.edu.luphung.courseapi.repository.UserRepository;
 import vn.edu.luphung.courseapi.service.AuthenticationService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -151,9 +152,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private String generateRandomUserId() {
+        String year = String.valueOf(LocalDate.now().getYear()).substring(2);
+
         Random ran = new Random();
         int generatedNum = ran.nextInt(1000000);
-        return String.format("%06d", generatedNum);
+        String randomNum = String.format("%06d", generatedNum);
+
+        return year + randomNum;
     }
 
     public boolean isUsernameExist(String username) {

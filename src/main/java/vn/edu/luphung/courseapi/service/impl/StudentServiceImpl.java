@@ -13,6 +13,7 @@ import vn.edu.luphung.courseapi.repository.ClassRepository;
 import vn.edu.luphung.courseapi.repository.StudentRepository;
 import vn.edu.luphung.courseapi.service.StudentService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -33,14 +34,16 @@ public class StudentServiceImpl implements StudentService {
                 new ResourceNotFoundException("Class", "Id", studentDTO.getClassroom().getId()));
 
         Student student = new Student();
-        student.setStudentId(generateRandomStudentId());
+        student.setClassroom(classroom);
+
+        student.setStudentId(generateStudentId(classroom));
         student.setFirstName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
         student.setPhoneNumber(studentDTO.getPhoneNumber());
         student.setDob(studentDTO.getDob());
         student.setBirthPlace(studentDTO.getBirthPlace());
         student.setGender(studentDTO.getGender());
-        student.setClassroom(classroom);
+        student.setCitizenId(studentDTO.getCitizenId());
         student.setNote(studentDTO.getNote());
         student.setStatus((byte) 1);
         student.setCreatedAt(LocalDateTime.now());
@@ -52,10 +55,21 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.existsByPhoneNumber(phoneNumber);
     }
 
-    private String generateRandomStudentId() {
-        Random ran = new Random();
-        int generatedNum = ran.nextInt(100000);
-        return String.format("%05d", generatedNum);
+    private String generateStudentId(Class classroom) {
+        // Current year (2 last number)
+        String year = String.valueOf(LocalDate.now().getYear()).substring(2);
+
+        // Get 4 last number from classId
+        String classId = classroom.getClassId();
+        String dayMonth = classId.substring(classId.length() - 4);
+
+        // Count the number of students in this class
+        long count = studentRepository.countByClassroom(classroom) + 1;
+
+        // Format to 3 number
+        String order = String.format("%03d", count);
+
+        return year + dayMonth + order;
     }
 
     @Override
@@ -99,6 +113,7 @@ public class StudentServiceImpl implements StudentService {
         studentDTO.setDob(student.getDob());
         studentDTO.setBirthPlace(student.getBirthPlace());
         studentDTO.setGender(student.getGender());
+        studentDTO.setCitizenId(student.getCitizenId());
         studentDTO.setClassroom(classDTO);
         studentDTO.setNote(student.getNote());
         studentDTO.setStatus(student.getStatus());
@@ -143,13 +158,13 @@ public class StudentServiceImpl implements StudentService {
 
         existingStudent.setClassroom(classroom);
 
-        existingStudent.setStudentId(studentDTO.getStudentId() != null ? studentDTO.getStudentId() : existingStudent.getStudentId());
         existingStudent.setFirstName(studentDTO.getFirstName() != null ? studentDTO.getFirstName() : existingStudent.getFirstName());
         existingStudent.setLastName(studentDTO.getLastName() != null ? studentDTO.getLastName() : existingStudent.getLastName());
         existingStudent.setPhoneNumber(studentDTO.getPhoneNumber() != null ? studentDTO.getPhoneNumber() : existingStudent.getPhoneNumber());
         existingStudent.setDob(studentDTO.getDob() != null ? studentDTO.getDob() : existingStudent.getDob());
         existingStudent.setBirthPlace(studentDTO.getBirthPlace() != null ? studentDTO.getBirthPlace() : existingStudent.getBirthPlace());
         existingStudent.setGender(studentDTO.getGender() != 3 ? studentDTO.getGender() : existingStudent.getGender());
+        existingStudent.setCitizenId(studentDTO.getCitizenId() != null ? studentDTO.getCitizenId() : existingStudent.getCitizenId());
         existingStudent.setNote(studentDTO.getNote() != null ? studentDTO.getNote() : existingStudent.getNote());
         existingStudent.setStatus(studentDTO.getStatus() != 0 ? studentDTO.getStatus() : existingStudent.getStatus());
         existingStudent.setUpdatedAt(LocalDateTime.now());

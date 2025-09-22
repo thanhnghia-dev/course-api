@@ -2,6 +2,7 @@ package vn.edu.luphung.courseapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import vn.edu.luphung.courseapi.model.Class;
 import vn.edu.luphung.courseapi.model.Student;
 import vn.edu.luphung.courseapi.model.User;
 
@@ -12,4 +13,5 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     List<Student> findByClassroomId(int classId);
     boolean existsByPhoneNumber(String phoneNumber);
+    int countByClassroom(Class classroom);
 }
