@@ -44,8 +44,12 @@ public class UserController {
     // Change password
     @PutMapping("/change-password")
     public ResponseEntity<String> changePassword(@ModelAttribute UserDTO userDTO) {
-        userService.updatePassword(userDTO);
-        return new ResponseEntity<>("User is changed password successfully!", HttpStatus.OK);
+        try {
+            userService.updatePassword(userDTO);
+            return ResponseEntity.ok("User password changed successfully!");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // Reset password

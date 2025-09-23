@@ -97,9 +97,14 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepository.findById(userId).orElseThrow(() ->
                 new ResourceNotFoundException("User", "Id", userId));
 
-        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+        String currentPassword = existingUser.getPassword();
+        String newPassword = userDTO.getPassword();
 
-        existingUser.setPassword(userDTO.getPassword() != null ? encodedPassword : existingUser.getPassword());
+        if (passwordEncoder.matches(newPassword, currentPassword)) {
+            throw new IllegalArgumentException("New password is same as current one");
+        }
+
+        existingUser.setPassword(passwordEncoder.encode(newPassword));
         existingUser.setUpdatedAt(LocalDateTime.now());
 
         userRepository.save(existingUser);
