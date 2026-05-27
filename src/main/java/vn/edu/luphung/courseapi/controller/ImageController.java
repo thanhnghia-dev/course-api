@@ -1,6 +1,6 @@
 package vn.edu.luphung.courseapi.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +14,10 @@ import vn.edu.luphung.courseapi.service.ImageService;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/v1/public/images")
 public class ImageController {
-    @Autowired
-    private ImageService imageService;
-
-    public ImageController(ImageService imageService) {
-        this.imageService = imageService;
-    }
+    private final ImageService imageService;
 
     // Get all Image
     @GetMapping

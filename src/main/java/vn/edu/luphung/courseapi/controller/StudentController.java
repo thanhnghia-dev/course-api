@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.luphung.courseapi.dto.StudentDTO;
-import vn.edu.luphung.courseapi.dto.auth.AuthenticationResponse;
 import vn.edu.luphung.courseapi.model.Student;
 import vn.edu.luphung.courseapi.service.StudentService;
 
@@ -16,8 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/public/students")
 public class StudentController {
-    @Autowired
-    private StudentService studentService;
+    private final StudentService studentService;
 
     // Create a new Student
     @PostMapping()

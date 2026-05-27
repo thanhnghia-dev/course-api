@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/public")
-public class HealthController {
+public class PingController {
 
     @GetMapping("/ping")
     public String ping() {
-        return "ok";
+        return "Load API successful!";
     }
 }

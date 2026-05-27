@@ -1,6 +1,6 @@
 package vn.edu.luphung.courseapi.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +11,10 @@ import vn.edu.luphung.courseapi.service.LogService;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/v1/admin/logs")
 public class LogController {
-    @Autowired
-    private LogService logService;
-
-    public LogController(LogService logService) {
-        this.logService = logService;
-    }
+    private final LogService logService;
 
     // Create a new Log
     @PostMapping()

@@ -1,7 +1,7 @@
 package vn.edu.luphung.courseapi.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +14,10 @@ import vn.edu.luphung.courseapi.service.UserService;
 import java.io.IOException;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("api/v1/public/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     // Get User info
     @GetMapping("/user-info")

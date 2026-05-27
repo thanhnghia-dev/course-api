@@ -1,7 +1,6 @@
 package vn.edu.luphung.courseapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/public/courses")
 public class CourseController {
-    @Autowired
-    private CourseService courseService;
+    private final CourseService courseService;
 
     // Create a new Course
     @PostMapping()
