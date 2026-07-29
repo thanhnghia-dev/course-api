@@ -27,20 +27,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final AuthenticationService authenticationService;
 
-    @Autowired
-    private ImageRepository imageRepository;
-    @Autowired
+    private final ImageRepository imageRepository;
     @Lazy
-    private ImageServiceImpl imageService;
-    @Autowired
-    private Cloudinary cloudinary;
+    private final ImageServiceImpl imageService;
+    private final Cloudinary cloudinary;
 
     @Override
     public User getUserInfo() {

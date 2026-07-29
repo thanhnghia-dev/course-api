@@ -3,7 +3,6 @@ package vn.edu.luphung.courseapi.service.impl;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vn.edu.luphung.courseapi.dto.ImageDTO;
@@ -21,14 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
-    @Autowired
-    private ImageRepository imageRepository;
-
-    @Autowired
-    private Cloudinary cloudinary;
+    private final ImageRepository imageRepository;
+    private final Cloudinary cloudinary;
 
     public Image saveUserAvatar(MultipartFile file, User user) throws IOException {
         String fullName = user.getFullName().replaceAll(" ", "_");

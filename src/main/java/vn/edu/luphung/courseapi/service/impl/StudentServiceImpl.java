@@ -2,7 +2,6 @@ package vn.edu.luphung.courseapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.edu.luphung.courseapi.dto.ClassDTO;
 import vn.edu.luphung.courseapi.dto.StudentDTO;
@@ -23,10 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class StudentServiceImpl implements StudentService {
-    @Autowired
-    private StudentRepository studentRepository;
-    @Autowired
-    private ClassRepository classRepository;
+    private final StudentRepository studentRepository;
+    private final ClassRepository classRepository;
 
     @Override
     public Student saveStudent(int classId, StudentDTO studentDTO) {

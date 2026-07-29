@@ -11,8 +11,7 @@ import vn.edu.luphung.courseapi.repository.UserRepository;
 @Service
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

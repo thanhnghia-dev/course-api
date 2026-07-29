@@ -2,7 +2,6 @@ package vn.edu.luphung.courseapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.edu.luphung.courseapi.dto.ImageDTO;
 import vn.edu.luphung.courseapi.dto.UserDTO;
@@ -21,8 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class AdminServiceImpl implements AdminService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<UserDTO> getUsers() {

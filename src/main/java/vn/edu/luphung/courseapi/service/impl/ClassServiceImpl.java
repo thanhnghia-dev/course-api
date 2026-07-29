@@ -1,6 +1,6 @@
 package vn.edu.luphung.courseapi.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.edu.luphung.courseapi.dto.ClassDTO;
 import vn.edu.luphung.courseapi.dto.CourseDTO;
@@ -16,11 +16,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ClassServiceImpl implements ClassService {
-    @Autowired
-    private ClassRepository classRepository;
-    @Autowired
-    private CourseRepository courseRepository;
+    private final ClassRepository classRepository;
+    private final CourseRepository courseRepository;
 
     @Override
     public Class saveClass(int courseId, ClassDTO classDTO) {

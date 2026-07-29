@@ -1,7 +1,6 @@
 package vn.edu.luphung.courseapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.edu.luphung.courseapi.dto.LogDTO;
 import vn.edu.luphung.courseapi.exception.ResourceNotFoundException;
@@ -14,15 +13,12 @@ import vn.edu.luphung.courseapi.service.LogService;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class LogServiceImpl implements LogService {
-    @Autowired
-    private LogRepository logRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AdminServiceImpl adminService;
+    private final LogRepository logRepository;
+    private final UserRepository userRepository;
+    private final AdminServiceImpl adminService;
 
     @Override
     public Log saveLog(int userId, LogDTO logDTO) {
