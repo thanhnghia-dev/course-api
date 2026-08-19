@@ -33,7 +33,17 @@ public class ClassServiceImpl implements ClassService {
         classroom.setStartDate(classDTO.getStartDate());
         classroom.setEndDate(classDTO.getEndDate());
         classroom.setExamDate(classDTO.getExamDate());
-        classroom.setStatus((byte) 1);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.isBefore(classDTO.getStartDate())) {
+            classroom.setStatus((byte) 0);
+        } else if (!now.isAfter(classDTO.getEndDate())) {
+            classroom.setStatus((byte) 1);
+        } else {
+            classroom.setStatus((byte) 2);
+        }
+
         classroom.setCreatedAt(LocalDateTime.now());
 
         return classRepository.save(classroom);
@@ -43,20 +53,54 @@ public class ClassServiceImpl implements ClassService {
     public List<ClassDTO> getClasses() {
         List<Class> classes = classRepository.findAll();
 
-        return classes.stream().map(this::convertToDTO).collect(Collectors.toList());
+        return classes.stream()
+                .map(classroom -> {
+                    updateClassStatus(classroom);
+                    return convertToDTO(classroom);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<ClassDTO> getClassesByCourseId(int courseId) {
         List<Class> classes = classRepository.findByCourseId(courseId);
 
-        return classes.stream().map(this::convertToDTO).collect(Collectors.toList());
+        return classes.stream()
+                .map(classroom -> {
+                    updateClassStatus(classroom);
+                    return convertToDTO(classroom);
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Automatically Update status based on current time
+     * 0 = Not yet started
+     * 1 = Ongoing
+     * 2 = Finished
+     */
+    private void updateClassStatus(Class classroom) {
+        LocalDateTime now = LocalDateTime.now();
+        byte newStatus;
+
+        if (now.isBefore(classroom.getStartDate())) {
+            newStatus = 0;
+        } else if (!now.isAfter(classroom.getEndDate())) {
+            newStatus = 1;
+        } else {
+            newStatus = 2;
+        }
+
+        if (classroom.getStatus() != newStatus) {
+            classroom.setStatus(newStatus);
+            classroom.setUpdatedAt(now);
+            classRepository.save(classroom);
+        }
     }
 
     private ClassDTO convertToDTO(Class classroom) {
         CourseDTO courseDTO = null;
         Course course = classroom.getCourse();
-        LocalDateTime currentDate = LocalDateTime.now();
 
         if (course != null) {
             courseDTO = new CourseDTO(
@@ -74,19 +118,7 @@ public class ClassServiceImpl implements ClassService {
         classDTO.setStartDate(classroom.getStartDate());
         classDTO.setEndDate(classroom.getEndDate());
         classDTO.setExamDate(classroom.getExamDate());
-
-        if (classroom.getEndDate().isBefore(currentDate)) {
-            if (classroom.getStatus() != 2) {
-                classDTO.setStatus((byte) 2);
-                classroom.setStatus((byte) 2);
-                classroom.setUpdatedAt(LocalDateTime.now());
-
-                classRepository.save(classroom);
-            }
-        } else {
-            classDTO.setStatus(classroom.getStatus());
-        }
-
+        classDTO.setStatus(classroom.getStatus());
         classDTO.setCreatedAt(classroom.getCreatedAt());
         classDTO.setUpdatedAt(classroom.getUpdatedAt());
 
@@ -95,8 +127,12 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public Class getClassByID(Integer id) {
-        return classRepository.findById(id).orElseThrow(() ->
+        Class classroom = classRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Class", "Id", id));
+
+        updateClassStatus(classroom);
+
+        return classroom;
     }
 
     @Override
@@ -109,6 +145,17 @@ public class ClassServiceImpl implements ClassService {
         existingClass.setStartDate(classDTO.getStartDate() != null ? classDTO.getStartDate() : existingClass.getStartDate());
         existingClass.setEndDate(classDTO.getEndDate() != null ? classDTO.getEndDate() : existingClass.getEndDate());
         existingClass.setExamDate(classDTO.getExamDate() != null ? classDTO.getExamDate() : existingClass.getExamDate());
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.isBefore(existingClass.getStartDate())) {
+            existingClass.setStatus((byte) 0);
+        } else if (!now.isAfter(existingClass.getEndDate())) {
+            existingClass.setStatus((byte) 1);
+        } else {
+            existingClass.setStatus((byte) 2);
+        }
+
         existingClass.setUpdatedAt(LocalDateTime.now());
 
         return classRepository.save(existingClass);
