@@ -1,7 +1,6 @@
 package vn.edu.luphung.courseapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +20,19 @@ public class StudentController {
     @PostMapping()
     public ResponseEntity<?> createStudent(@RequestParam int classId,
                                            @ModelAttribute StudentDTO student) {
+
         try {
             if (studentService.isPhoneNumberExisted(student.getPhoneNumber())) {
-                return new ResponseEntity<>("Học viên đã tồn tại!", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Số điện thoại đã tồn tại!",HttpStatus.CONFLICT);
             }
 
-            return new ResponseEntity<>(studentService.saveStudent(classId, student), HttpStatus.CREATED);
+            if (studentService.isCitizenIdExisted(student.getCitizenId())) {
+                return new ResponseEntity<>("Số CCCD đã tồn tại!",HttpStatus.CONFLICT);
+            }
+
+            Student savedStudent = studentService.saveStudent(classId, student);
+
+            return new ResponseEntity<>(savedStudent,HttpStatus.CREATED);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -47,13 +53,13 @@ public class StudentController {
 
     // Get Student by id
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable ("id") int id) {
+    public ResponseEntity<Student> getStudentById(@PathVariable("id") int id) {
         return new ResponseEntity<>(studentService.getStudentByID(id), HttpStatus.OK);
     }
 
     // Update Student by id
     @PutMapping("{id}")
-    public ResponseEntity<Student> updateStudentById(@PathVariable ("id") int id,
+    public ResponseEntity<Student> updateStudentById(@PathVariable("id") int id,
                                                      @RequestParam int classId,
                                                      @ModelAttribute StudentDTO studentDTO) {
         return new ResponseEntity<>(studentService.updateStudent(id, classId, studentDTO), HttpStatus.OK);
@@ -61,7 +67,7 @@ public class StudentController {
 
     // Delete Student by id
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteStudentById(@PathVariable ("id") int id) {
+    public ResponseEntity<String> deleteStudentById(@PathVariable("id") int id) {
         studentService.deleteStudentByID(id);
         return new ResponseEntity<>("Student " + id + " is deleted successfully!", HttpStatus.OK);
     }

@@ -10,6 +10,7 @@ public interface StudentService {
     List<StudentDTO> getStudents();
     List<StudentDTO> getStudentsByClass(int classId);
     boolean isPhoneNumberExisted(String phoneNumber);
+    boolean isCitizenIdExisted(String citizenId);
     Student getStudentByID(Integer id);
     Student updateStudent(Integer id, int classId, StudentDTO studentDTO);
     void deleteStudentByID(Integer id);

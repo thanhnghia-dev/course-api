@@ -15,7 +15,6 @@ import vn.edu.luphung.courseapi.service.StudentService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,22 +33,43 @@ public class StudentServiceImpl implements StudentService {
         student.setClassroom(classroom);
 
         student.setStudentId(generateStudentId(classroom));
+
         student.setFirstName(studentDTO.getFirstName());
         student.setLastName(studentDTO.getLastName());
-        student.setPhoneNumber(studentDTO.getPhoneNumber());
         student.setDob(studentDTO.getDob());
         student.setBirthPlace(studentDTO.getBirthPlace());
         student.setGender(studentDTO.getGender());
-        student.setCitizenId(studentDTO.getCitizenId());
         student.setNote(studentDTO.getNote());
         student.setStatus((byte) 1);
         student.setCreatedAt(LocalDateTime.now());
 
+        student.setPhoneNumber(normalizeOptional(studentDTO.getPhoneNumber()));
+        student.setCitizenId(normalizeOptional(studentDTO.getCitizenId()));
+
         return studentRepository.save(student);
     }
 
+    @Override
     public boolean isPhoneNumberExisted(String phoneNumber) {
-        return studentRepository.existsByPhoneNumber(phoneNumber);
+        if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+            return false;
+        }
+        return studentRepository.existsByPhoneNumber(phoneNumber.trim());
+    }
+
+    @Override
+    public boolean isCitizenIdExisted(String citizenId) {
+        if (citizenId == null || citizenId.trim().isEmpty()) {
+            return false;
+        }
+        return studentRepository.existsByCitizenId(citizenId.trim());
+    }
+
+    private String normalizeOptional(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        return value.trim();
     }
 
     private String generateStudentId(Class classroom) {

@@ -13,5 +13,6 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     List<Student> findByClassroomId(int classId);
     boolean existsByPhoneNumber(String phoneNumber);
+    boolean existsByCitizenId(String citizenId);
     int countByClassroom(Class classroom);
 }
